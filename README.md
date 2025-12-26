@@ -1,490 +1,359 @@
-# California EV Adoption Research Project
-## Interpretable Machine Learning for Electric Vehicle Adoption
+# 🚗 California EV Adoption Research
 
-**Author**: MAHBUB (Chulalongkorn University)  
-**Date**: December 26, 2025  
-**Target**: Q2 Journal Publication (Transport Policy / Energy Research & Social Science)
+<div align="center">
 
----
+![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-96%25-00C853?style=for-the-badge&logo=xgboost&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
 
-## 📁 PROJECT STRUCTURE
+**Interpretable Machine Learning for Electric Vehicle Adoption Analysis**
 
-```
-CA_EV_Research/
-├── data/
-│   ├── raw/                    # Original NREL dataset (DO NOT MODIFY)
-│   │   ├── data/
-│   │   │   ├── residential_vehicle.csv
-│   │   │   ├── residential_background.csv
-│   │   │   ├── residential_household.csv
-│   │   │   ├── commercial_vehicle.csv
-│   │   │   └── commercial_background.csv
-│   │   └── documentation/
-│   │       └── California_vehicle_survey_data_dictionary_2024.xlsx
-│   └── processed/              # Processed data (auto-generated)
-│       ├── merged_residential_data.csv
-│       ├── cleaned_data.csv
-│       ├── train_data.csv
-│       ├── test_data.csv
-│       └── missing_data_report.csv
-├── src/                        # Source code
-│   ├── config.py              # Configuration & settings
-│   ├── data_loader.py         # Data loading & merging
-│   ├── data_cleaning.py       # Missing data handling
-│   ├── feature_engineering.py # Create derived features
-│   ├── exploratory_analysis.py # EDA & visualizations
-│   ├── modeling.py            # ML model training
-│   ├── shap_analysis.py       # XAI analysis
-│   └── llm_integration.py     # LLM-powered insights
-├── notebooks/                  # Jupyter notebooks
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_modeling.ipynb
-│   └── 03_results_analysis.ipynb
-├── figures/                    # Publication-grade figures (600 DPI)
-├── results/                    # Model outputs, SHAP values
-├── models/                     # Trained models (.pkl files)
-├── streamlit_app/             # Interactive web app
-│   └── app.py
-├── docs/                       # Documentation & reports
-├── requirements.txt            # Python dependencies
-└── README.md                   # This file
-```
+[📊 Dataset](#-dataset) • [🎯 Results](#-key-results) • [🚀 Quick Start](#-quick-start) • [📱 Demo](#-interactive-dashboard) • [📄 Paper](#-publication)
+
+</div>
 
 ---
 
-## 🚀 GETTING STARTED
+## 📖 Overview
 
-### **Prerequisites**
-- Python 3.9 or higher
-- VS Code (recommended) or any Python IDE
-- Git (optional, for version control)
+A comprehensive machine learning study analyzing **Electric Vehicle (EV) adoption patterns** among **7,353 California households** using state-of-the-art interpretable AI techniques.
 
-### **Step 1: Install Python Packages**
+### 🌟 Highlights
 
-Open terminal in project root directory:
+- **🎯 96% Prediction Accuracy** - XGBoost model with ROC-AUC of 0.976
+- **🔍 Explainable AI** - SHAP analysis revealing key adoption drivers
+- **📊 15 Publication Figures** - 600 DPI, publication-ready visualizations
+- **📱 Interactive Dashboard** - 6-page Streamlit web application
+- **📈 Statistical Rigor** - All tests p < 0.001, strong effect sizes
 
+---
+
+## 🎯 Key Results
+
+### Model Performance
+
+| Model | Accuracy | Precision | Recall | F1-Score | ROC-AUC |
+|:------|:--------:|:---------:|:------:|:--------:|:-------:|
+| **XGBoost** ⭐ | **95.97%** | **0.813** | **0.865** | **0.838** | **0.976** |
+| LightGBM | 95.92% | 0.803 | 0.876 | 0.838 | 0.975 |
+| Random Forest | 81.10% | 0.378 | 0.884 | 0.530 | 0.909 |
+| Logistic Regression | 88.98% | 0.535 | 0.665 | 0.593 | 0.884 |
+
+### Top 5 Predictors (SHAP Analysis)
+
+1. 💰 **Income Level** - Strongest predictor (Cohen's d = 0.48)
+2. 🎓 **Education** - 94% of EV owners have college degree vs 80% non-EV
+3. ⏰ **Vehicle Age** - EVs are 3 years newer on average
+4. 🔌 **Charging Access** - Infrastructure availability matters
+5. 📊 **Adoption Readiness** - Composite behavioral score
+
+### Key Findings
+
+- ✅ **Income effect**: EV owners earn ~$25k more ($125-150k vs $100-125k)
+- ✅ **Education gap**: 14.2% higher college degree rate among EV owners
+- ✅ **Age matters**: EV owners purchase significantly newer vehicles (4.0 vs 7.1 years)
+- ✅ **All demographic variables**: Statistically significant (p < 0.001)
+
+---
+
+## 📊 Dataset
+
+**Source**: NREL California Vehicle Survey 2024  
+**Sample**: 7,353 vehicles from 3,800 households  
+**Target**: Binary EV adoption (12.1% adoption rate)  
+**Features**: 244 variables (232 original + 12 engineered)
+
+### Engineered Features
+
+- `ev_experience_score` - Composite hybrid/PHEV/BEV experience (0-2)
+- `charging_access_index` - Home + work + public charging (0-1)
+- `adoption_readiness_score` - Multi-factor readiness metric (0-10)
+- `income_category` - Low/Medium/High income brackets
+- `college_degree_plus` - Bachelor's degree or higher
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Python 3.9+
+- pip package manager
+- 8GB RAM minimum
+
+### Installation
 ```bash
-# Create virtual environment (recommended)
+# Clone repository
+git clone https://github.com/mahbubchula/CA-EV-Adoption-Research.git
+cd CA-EV-Adoption-Research
+
+# Create virtual environment
 python -m venv venv
 
-# Activate virtual environment
-# On Windows:
-venv\Scripts\activate
-# On Mac/Linux:
-source venv/bin/activate
+# Activate environment
+venv\Scripts\activate  # Windows
+source venv/bin/activate  # Mac/Linux
 
-# Install all dependencies
+# Install dependencies
 pip install -r requirements.txt
 ```
 
-### **Step 2: Set Up Data**
+### Data Setup
 
-1. **Extract dataset** to `data/raw/`
-2. **Verify file structure**:
-   ```bash
-   ls data/raw/data/
-   # Should show: residential_vehicle.csv, residential_background.csv, etc.
-   ```
+⚠️ **Dataset not included** (proprietary NREL data, too large for GitHub)
 
-### **Step 3: Configure Environment**
+1. Download from: [NREL Transportation Secure Data Center](https://www.nrel.gov/transportation/secure-transportation-data/)
+2. Extract to: `data/raw/data/`
+3. Required files:
+   - `residential_vehicle.csv`
+   - `residential_background.csv`
+   - `residential_household.csv`
 
-**For LLM features (optional):**
+### Run Pipeline
 ```bash
-# Set Groq API key as environment variable
-# On Windows (PowerShell):
-$env:GROQ_API_KEY = "your_api_key_here"
-
-# On Mac/Linux:
-export GROQ_API_KEY="your_api_key_here"
-
-# Get free API key at: https://console.groq.com/
-```
-
----
-
-## 📊 WEEK 1: DATA PREPARATION (CURRENT)
-
-### **Step 1: Data Merging**
-
-```bash
+# Navigate to source directory
 cd src
+
+# Step 1: Load and merge data
 python data_loader.py
-```
-
-**What it does:**
-- Loads all 3 residential datasets
-- Merges vehicles + background + household data
-- Creates binary target variable (`is_ev`)
-- Saves to: `data/processed/merged_residential_data.csv`
-
-**Expected output:**
-```
-✓ Loaded 7,353 vehicles from 3,800 households
-✓ Target: 888 EV (12.1%), 6,063 Non-EV (87.9%)
-✓ Merged dataset saved
-```
-
-### **Step 2: Data Cleaning**
-
-```bash
-python data_cleaning.py
-```
-
-**What it does:**
-- Analyzes missing data patterns
-- Drops variables with >90% missing
-- Imputes numerical variables (grouped median)
-- Imputes binary EV experience (0 if missing)
-- Imputes categorical variables (mode)
-- Saves to: `data/processed/cleaned_data.csv`
-- Creates: `data/processed/missing_data_report.csv`
-
-**Expected output:**
-```
-✓ Dropped 9 variables (>90% missing)
-✓ Imputed 15 numerical variables
-✓ No missing data remaining
-✓ Final dataset: 6,951 records × 312 features
-```
-
-### **Step 3: Feature Engineering**
-
-```bash
-python feature_engineering.py
-```
-
-**What it does:**
-- Creates 10+ new derived features:
-  1. EV Experience Score (0-3 scale)
-  2. Charging Access Index (0-1 scale)
-  3. Income Categories (Low/Medium/High)
-  4. College Degree Binary
-  5. Vehicle Age Approximation
-  6. Affordability Ratio (price/income)
-  7. Mileage Categories (Low/Medium/High)
-  8. Multi-Vehicle Household Indicator
-  9. Urban Region Indicator
-  10. Adoption Readiness Score (0-10 scale)
-
-**Expected output:**
-```
-✓ Created 10 new features
-✓ Total features: 322
-```
-
----
-
-## 🔍 USAGE EXAMPLES
-
-### **Example 1: Load and Explore Data**
-
-```python
-import pandas as pd
-import sys
-sys.path.append('src')
-from config import PROCESSED_DATA_PATHS
-
-# Load cleaned data
-df = pd.read_csv(PROCESSED_DATA_PATHS['cleaned_data'])
-
-# Check shape
-print(f"Dataset: {df.shape[0]:,} records × {df.shape[1]} features")
-
-# Check target distribution
-print(df['is_ev'].value_counts())
-
-# Check new engineered features
-print(df[['ev_experience_score', 'charging_access_index', 
-          'adoption_readiness_score']].describe())
-```
-
-### **Example 2: Run Full Week 1 Pipeline**
-
-```python
-# Create a script: run_week1.py
-
-import sys
-sys.path.append('src')
-
-from data_loader import main as load_data
-from data_cleaning import main as clean_data
-from feature_engineering import main as engineer_features
-
-print("WEEK 1: DATA PREPARATION PIPELINE")
-print("="*80)
-
-# Step 1: Load and merge
-print("\n[1/3] Loading and merging data...")
-merged_df = load_data()
 
 # Step 2: Clean data
-print("\n[2/3] Cleaning data...")
-cleaned_df = clean_data()
+python data_cleaning.py
 
 # Step 3: Engineer features
-print("\n[3/3] Engineering features...")
-final_df = engineer_features()
+python feature_engineering.py
 
-print("\n✓ WEEK 1 COMPLETE!")
-print(f"Final dataset: {final_df.shape[0]:,} records × {final_df.shape[1]} features")
+# Step 4: Train models
+python train_models.py
+
+# Step 5: SHAP analysis
+python shap_analysis.py
+
+# Step 6: Generate visualizations
+python eda_visualizations.py
+python visualize_model_results.py
 ```
 
-Then run:
+---
+
+## 📱 Interactive Dashboard
+
+Launch the Streamlit web application:
 ```bash
-python run_week1.py
+streamlit run streamlit_app/app.py
+```
+
+### Dashboard Features
+
+- 🔮 **EV Predictor** - Input household characteristics, get instant predictions
+- 📊 **Model Performance** - Interactive metrics, confusion matrices, ROC curves
+- 🔍 **Feature Importance** - SHAP visualizations and explanations
+- 💡 **Policy Simulator** - Test what-if scenarios for policy interventions
+- 📈 **Data Explorer** - Interactive filtering and visualization
+- 📋 **Statistical Tests** - Chi-square, t-tests, correlation analysis
+
+---
+
+## 📁 Project Structure
+```
+CA_EV_Research/
+├── 📂 src/                     # Python source code
+│   ├── config.py               # Project configuration
+│   ├── data_loader.py          # Data merging pipeline
+│   ├── data_cleaning.py        # Missing data handling
+│   ├── feature_engineering.py  # Feature creation
+│   ├── train_models.py         # ML model training
+│   ├── shap_analysis.py        # SHAP explainability
+│   ├── eda_visualizations.py   # EDA figures
+│   ├── statistical_analysis.py # Statistical tests
+│   └── visualize_model_results.py  # Model figures
+│
+├── 📂 streamlit_app/           # Interactive web app
+│   └── app.py                  # 6-page dashboard
+│
+├── 📂 figures/                 # Publication figures (600 DPI)
+│   ├── figure_01_sample_characteristics.png
+│   ├── figure_07_roc_curves.png
+│   └── ... (15 total)
+│
+├── 📂 results/                 # Analysis outputs
+│   ├── model_comparison.csv
+│   ├── shap_feature_importance.csv
+│   ├── chi_square_tests.csv
+│   └── table1_sample_characteristics.csv
+│
+├── 📂 models/                  # Trained models (excluded from repo)
+├── 📂 data/                    # Data files (excluded from repo)
+├── 📄 requirements.txt         # Python dependencies
+└── 📄 README.md                # This file
 ```
 
 ---
 
-## 📈 NEXT STEPS (Week 2+)
+## 🔬 Methodology
 
-### **Week 2: Exploratory Data Analysis**
-- `python exploratory_analysis.py`
-- Generates 15+ publication-grade figures (600 DPI)
-- Creates descriptive statistics table
-- Performs statistical tests
+### 1. Data Preparation
+- **Merging**: 3 NREL survey datasets integrated
+- **Cleaning**: 95 high-missing variables dropped, sophisticated imputation
+- **Engineering**: 12 derived features created
 
-### **Week 3: Machine Learning Modeling**
-- `python modeling.py`
-- Trains 4 models (Logistic Regression, Random Forest, XGBoost, LightGBM)
-- Hyperparameter tuning with Optuna
-- Saves trained models to `models/`
+### 2. Machine Learning
+- **Models**: Logistic Regression (baseline), Random Forest, XGBoost, LightGBM
+- **Imbalance Handling**: Class weights + scale_pos_weight
+- **Validation**: 70/30 stratified train-test split
+- **Metrics**: Accuracy, Precision, Recall, F1-Score, ROC-AUC
 
-### **Week 4-5: SHAP Analysis**
-- `python shap_analysis.py`
-- Global feature importance
-- Dependence plots
-- Individual prediction explanations
-- Subgroup analysis (equity)
+### 3. Explainable AI (XAI)
+- **Method**: SHAP (SHapley Additive exPlanations)
+- **Analyses**: 
+  - Global feature importance
+  - Individual prediction explanations
+  - Feature dependence plots
+  - Waterfall plots for case studies
 
-### **Week 6: Streamlit App**
-- `streamlit run streamlit_app/app.py`
-- Interactive EV adoption predictor
-- Policy scenario simulator
-- Equity dashboard
-
----
-
-## 📊 DATA DICTIONARY
-
-### **Target Variable**
-- `is_ev`: Binary (1 = EV, 0 = Gasoline)
-- `fuel_category`: Multi-class (0 = Gasoline, 1 = PHEV, 2 = BEV)
-
-### **Key Features**
-
-**Demographics:**
-- `income`: 1-11 (< $10k to > $250k)
-- `max_age`: 1-8 (16-17 to 75+)
-- `max_education`: 1-8 (Less than HS to Doctorate)
-- `household_size`: Number of household members
-
-**EV Experience:**
-- `hybrid_experience`: Binary (1 = Yes, 0 = No)
-- `phev_experience`: Binary
-- `bev_experience`: Binary
-- `ev_experience_score`: 0-3 (composite score)
-
-**Charging Infrastructure:**
-- `home_charge`: Binary or Yes/No
-- `charge_work`: Binary or Yes/No
-- `charge_spots`: Number of public charging locations aware of
-- `charging_access_index`: 0-1 (composite index)
-
-**Vehicle Characteristics:**
-- `annual_mileage`: Miles per year
-- `veh_class_nrel`: Vehicle class (SUV, sedan, etc.)
-- `acquired_price_1`: Purchase price (dollars)
-- `vehicle_age_approx`: Years since purchase
-
-**Geography:**
-- `county`: California county
-- `region`: Geographic region
-- `urban_region`: Binary (urban vs. rural)
-
-**Engineered Features:**
-- `income_category`: Low/Medium/High
-- `college_degree_plus`: Binary
-- `affordability_ratio`: Price/income
-- `mileage_category`: Low/Medium/High
-- `multi_vehicle_household`: Binary
-- `adoption_readiness_score`: 0-10 composite metric
+### 4. Statistical Analysis
+- **Tests**: Chi-square (categorical), t-tests (continuous), correlation
+- **Effect Sizes**: Cohen's d, Cramér's V, Pearson's r
+- **Reporting**: Table 1 (sample characteristics), all p-values < 0.001
 
 ---
 
-## ⚙️ CONFIGURATION
+## 📊 Sample Visualizations
 
-Edit `src/config.py` to customize:
+<div align="center">
 
-```python
-# Random seed (for reproducibility)
-RANDOM_STATE = 42
+### Model Performance Comparison
+*ROC curves showing XGBoost achieving near-perfect discrimination (AUC=0.976)*
 
-# Figure settings
-FIGURE_SETTINGS = {
-    'dpi': 600,  # Publication quality
-    'font_family': 'Times New Roman',
-    'font_size': 12
+### SHAP Feature Importance
+*Top 20 features ranked by mean absolute SHAP value*
+
+### Confusion Matrix
+*XGBoost: 97.3% Non-EV accuracy, 86.5% EV recall*
+
+</div>
+
+---
+
+## 🛠️ Technologies
+
+### Core Libraries
+- **ML/Stats**: `scikit-learn` `xgboost` `lightgbm` `scipy` `statsmodels`
+- **Explainability**: `shap`
+- **Visualization**: `matplotlib` `seaborn` `plotly`
+- **Web App**: `streamlit`
+- **Data**: `pandas` `numpy`
+
+### Development
+- **Python**: 3.9+
+- **IDE**: VS Code (recommended)
+- **Version Control**: Git/GitHub
+
+---
+
+## 📄 Publication
+
+### Status
+🚧 **Manuscript in Preparation**
+
+**Target Journals**:
+- Transport Policy (Elsevier)
+- Energy Research & Social Science
+- Transportation Research Part F
+
+### Cite This Work
+```bibtex
+@misc{mahbub2025ev,
+  title={Interpretable Machine Learning for Electric Vehicle Adoption: 
+         A California Household Analysis},
+  author={MAHBUB},
+  year={2025},
+  institution={Chulalongkorn University},
+  howpublished={\url{https://github.com/mahbubchula/CA-EV-Adoption-Research}}
 }
-
-# Model hyperparameters
-MODEL_PARAMS = {
-    'xgboost': {
-        'n_estimators': 200,
-        'max_depth': 6,
-        'learning_rate': 0.05,
-        # ... etc
-    }
-}
 ```
 
 ---
 
-## 🐛 TROUBLESHOOTING
+## 🤝 Contributing
 
-### **Problem: "File not found" error**
-**Solution**: Check that data is in `data/raw/data/` directory
-```bash
-ls data/raw/data/
-# Should show all CSV files
-```
+Contributions welcome! Please:
 
-### **Problem: "Module not found" error**
-**Solution**: Make sure you're in the project root and virtual environment is activated
-```bash
-# Activate venv
-source venv/bin/activate  # Mac/Linux
-venv\Scripts\activate  # Windows
-
-# Add src to Python path
-export PYTHONPATH="${PYTHONPATH}:$(pwd)/src"  # Mac/Linux
-$env:PYTHONPATH += ";$(Get-Location)\src"  # Windows
-```
-
-### **Problem: "Memory error" when loading data**
-**Solution**: Process in chunks or use smaller sample
-```python
-# In data_loader.py, modify:
-df = pd.read_csv(path, low_memory=False, nrows=5000)  # Sample first 5000 rows
-```
-
-### **Problem: Figures not displaying in VS Code**
-**Solution**: Install Python extension and use Jupyter notebooks
-```bash
-# Convert script to notebook
-jupyter nbconvert --to notebook src/exploratory_analysis.py
-```
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-## 📝 DEVELOPMENT WORKFLOW
+## 📧 Contact
 
-### **Recommended VS Code Extensions:**
-1. **Python** (Microsoft) - IntelliSense, debugging
-2. **Jupyter** (Microsoft) - Notebook support
-3. **Pylance** (Microsoft) - Type checking
-4. **autoDocstring** - Generate docstrings
-5. **GitLens** (optional) - Git integration
+<div align="center">
 
-### **Daily Workflow:**
-```bash
-# 1. Activate environment
-source venv/bin/activate
+**MAHBUB**
 
-# 2. Pull latest changes (if using Git)
-git pull
+🏛️ Chulalongkorn University, Bangkok, Thailand  
+📚 Department of Civil Engineering  
+📧 6870376421@student.chula.ac.th  
+🔗 [GitHub](https://github.com/mahbubchula)
 
-# 3. Run your work
-cd src
-python your_script.py
-
-# 4. Check results
-ls ../data/processed/
-ls ../figures/
-
-# 5. Commit changes (if using Git)
-git add .
-git commit -m "Completed Week 1 data preparation"
-git push
-```
+</div>
 
 ---
 
-## 📚 RESOURCES
+## 🙏 Acknowledgments
 
-### **Documentation:**
-- NREL Dataset: https://www.nrel.gov/transportation/secure-transportation-data/tsdc-cleansed-data/2024-california-vehicle-survey
-- XGBoost: https://xgboost.readthedocs.io/
-- SHAP: https://shap.readthedocs.io/
-- Streamlit: https://docs.streamlit.io/
+- **Data Source**: NREL Transportation Secure Data Center
+- **Institution**: Chulalongkorn University
+- **Funding**: [If applicable]
 
-### **Key Papers:**
-- SHAP: Lundberg & Lee (2017) - "A Unified Approach to Interpreting Model Predictions"
-- EV Adoption: Rezvani et al. (2015) - "Advances in consumer electric vehicle adoption research"
+Special thanks to the NREL team for providing access to the California Vehicle Survey data.
 
 ---
 
-## 🎯 PROJECT GOALS
+## 📜 License
 
-### **Week 1** ✅ (Current)
-- [x] Data merging
-- [x] Missing data handling
-- [x] Feature engineering
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
-### **Week 2** (Next)
-- [ ] Exploratory data analysis
-- [ ] Descriptive statistics
-- [ ] 15+ publication figures
-
-### **Week 3-4** (ML Modeling)
-- [ ] Train 4 models
-- [ ] Hyperparameter tuning
-- [ ] Model evaluation
-
-### **Week 5-6** (XAI + Tool)
-- [ ] SHAP analysis
-- [ ] Equity analysis
-- [ ] Streamlit app
-
-### **Week 7-10** (Manuscript)
-- [ ] Write 10,000-word paper
-- [ ] Create appendices
-- [ ] Submit to journal
+### Data Usage
+- **NREL Data**: Subject to TSDC data use agreement
+- **Code**: Open source (MIT License)
+- **Figures**: CC BY 4.0 (attribution required)
 
 ---
 
-## 🤝 SUPPORT
+## 📌 Project Status
 
-**Questions?** Contact MAHBUB:
-- Email: 6870376421@student.chula.ac.th
-- University: Chulalongkorn University
-- Department: Transportation Engineering
+<div align="center">
 
----
+### Development Timeline
 
-## 📄 LICENSE & CITATION
+| Phase | Status | Duration |
+|:------|:------:|:--------:|
+| ✅ Data Preparation | Complete | Week 1 |
+| ✅ Exploratory Analysis | Complete | Week 2 |
+| ✅ ML Modeling | Complete | Week 3 |
+| ✅ SHAP Analysis | Complete | Week 4 |
+| ✅ Streamlit Dashboard | Complete | Week 6 |
+| 🚧 Manuscript Writing | In Progress | Week 7-10 |
+| ⏳ Journal Submission | Planned | 2025 Q1 |
 
-### **Data Source:**
-```
-Transportation Secure Data Center (2024). 
-California Vehicle Survey 2024. 
-National Renewable Energy Laboratory. 
-www.nrel.gov/tsdc
-```
-
-### **Code License:**
-MIT License - Feel free to use for research and education.
-
-### **How to Cite (when published):**
-```
-[Your Name] (2025). 
-Interpretable Machine Learning for Electric Vehicle Adoption: 
-A California Household Analysis. 
-[Journal Name], [Volume]([Issue]), [Pages].
-```
+</div>
 
 ---
 
-**Last Updated**: December 26, 2025  
-**Version**: 1.0 (Week 1 Complete)  
-**Status**: 🟢 Data Preparation Complete, Ready for EDA
+## 🌟 Star History
+
+If you find this project useful, please consider giving it a ⭐!
+
+---
+
+<div align="center">
+
+**Made with ❤️ for sustainable transportation research**
+
+*Last Updated: December 26, 2025*
+
+</div>
